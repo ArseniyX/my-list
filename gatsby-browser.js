@@ -1,7 +1,15 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/browser-apis/
- */
+import React from "react"
+import { Provider } from "react-redux"
+import store from "./src/state/store"
+import { ProvideAuth } from "./src/hooks/use-auth"
+import "firebase/auth"
+import "firebase/firestore"
+import "firebase/functions"
 
-// You can delete this file if you're not using it
+export const wrapRootElement = ({ element }) => {
+  return (
+    <ProvideAuth>
+      <Provider store={store}>{element}</Provider>
+    </ProvideAuth>
+  )
+}

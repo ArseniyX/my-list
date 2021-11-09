@@ -1,31 +1,35 @@
-import * as React from "react"
+import React, { useEffect } from "react"
 import { Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
-
+// import { useSelector } from "react-redux"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+// import user, { userSelector, setCurrentUser } from "../state/user"
+import { useAuth } from "../hooks/use-auth"
+import { Router, Redirect, navigate, Route, Switch } from "@reach/router"
+import Login from "../components/Login"
 
-const IndexPage = () => (
-  <Layout>
-    <Seo title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <StaticImage
-      src="../images/gatsby-astronaut.png"
-      width={300}
-      quality={95}
-      formats={["auto", "webp", "avif"]}
-      alt="A Gatsby astronaut"
-      style={{ marginBottom: `1.45rem` }}
-    />
-    <p>
-      <Link to="/page-2/">Go to page 2</Link> <br />
-      <Link to="/using-typescript/">Go to "Using TypeScript"</Link> <br />
-      <Link to="/using-ssr">Go to "Using SSR"</Link> <br />
-      <Link to="/using-dsg">Go to "Using DSG"</Link>
-    </p>
-  </Layout>
-)
+const IndexPage = () => {
+  const auth = useAuth()
+  // console.log(user)
+  useEffect(() => {
+    // navigation()
+  }, [])
+
+  // if (!auth.user && window.location.href !== `/app/login`) {
+  //   // If we’re not logged in, redirect to the home page.
+  //   navigate(`/app/login`, { replace: true })
+  //   return null
+  // }
+
+  return (
+    <Layout>
+      <Router>
+        <Login path="/auth" />
+      </Router>
+      <p>{auth?.user?.email}</p>
+    </Layout>
+  )
+}
 
 export default IndexPage
