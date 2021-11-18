@@ -9,8 +9,10 @@ import { navigate } from "gatsby"
 import { userSelector, setCurrentUser } from "../state/user"
 import { useAuth } from "../hooks/use-auth"
 import { isLoggedIn, setUser } from "../utils/auth"
+import Layout from "./layout"
+import { PROJECT_PATH, ROUTES } from "../utils/constantas"
 
-const AuthContainer = styled.div`
+export const StyledContainer = styled.div`
   position: relative;
   margin: 30px auto;
   width: 500px;
@@ -111,10 +113,9 @@ const ErrorContainer = styled.div`
 `
 
 const Login = () => {
-
-   if (isLoggedIn()) {
-     navigate(`/app/profile`)
-   }
+  if (isLoggedIn()) {
+    navigate(PROJECT_PATH)
+  }
 
   const [errorWrongPass, setErrorWrongPass] = useState(false)
   const auth = useAuth()
@@ -127,7 +128,7 @@ const Login = () => {
         console.log("login ")
         setUser(user)
 
-        navigate("/app/profile")
+        navigate(ROUTES.PROJECTS)
       })
       .catch(error => {
         console.log(error.code)
@@ -137,7 +138,7 @@ const Login = () => {
             .then(user => {
               console.log("created ")
               setUser(user)
-              navigate("/app/profile")
+              navigate(ROUTES.PROJECTS)
             })
             .catch(error => {
               console.log(error)
@@ -155,7 +156,7 @@ const Login = () => {
   }
 
   return (
-    <AuthContainer>
+    <Layout>
       <AuthImage src={authImage} />
       <AuthWrapper>
         <AuthTitleContainer>
@@ -179,7 +180,7 @@ const Login = () => {
           <ErrorContainer>{errorWrongPass && "Wrong Password!"}</ErrorContainer>
         </AuthForm>
       </AuthWrapper>
-    </AuthContainer>
+    </Layout>
   )
 }
 

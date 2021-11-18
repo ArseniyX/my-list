@@ -8,9 +8,10 @@ import Seo from "../components/seo"
 import { useAuth } from "../hooks/use-auth"
 import { Router, Redirect, navigate, Route, Switch } from "@reach/router"
 import Login from "../components/Login"
+import NotesHome from "../components/ProjectsPage"
 
 const IndexPage = () => {
-  const auth = useAuth()
+  // const auth = useAuth()
   // console.log(user)
   useEffect(() => {
     // navigation()
@@ -23,12 +24,13 @@ const IndexPage = () => {
   // }
 
   return (
-    <Layout>
-      <Router>
+    <>
+      {/* <Router>
         <Login path="/auth" />
-      </Router>
-      <p>{auth?.user?.email}</p>
-    </Layout>
+      </Router> */}
+      {/* <p>{auth?.user?.email}</p> */}
+      <NotesHome/>
+    </>
   )
 }
 

@@ -79,6 +79,7 @@ const StyledInput = ({ type, register }) => {
         {...register(type, { required: true, pattern, minLength: 6 })}
         type={type}
         id={`${type}-input`}
+        
         placeholder={type}
         spellcheck="false"
       />

@@ -13,6 +13,11 @@ export const isLoggedIn = () => {
   return !!user.email
 }
 
+export const getUserId = () => {
+  const user = getUser()
+  return user.uid
+}
+
 export const logout = auth => {
   return new Promise(resolve => {
     auth.signout().then(function () {

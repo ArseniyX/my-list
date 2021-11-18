@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react"
 import {
   getAuth,
   signOut,
@@ -8,73 +8,77 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   updateProfile,
-} from "firebase/auth";
-import "firebase/auth";
+} from "firebase/auth"
+import "firebase/auth"
+import { getFirestore } from "@firebase/firestore"
 import app from "gatsby-plugin-firebase-v9.0"
 
-const authContext = createContext();
+const authContext = createContext()
 
 // Provider component that wraps your app and makes auth object ...
 // ... available to any child component that calls useAuth().
 export function ProvideAuth({ children }) {
-  const auth = useProvideAuth();
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
+  const auth = useProvideAuth()
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>
 }
 
 // Hook for child components to get the auth object ...
 // ... and re-render when it changes.
 export const useAuth = () => {
-  return useContext(authContext);
-};
+  return useContext(authContext)
+}
+
+export const useFirestore = () => {
+  const db = getFirestore(app)
+  return db
+}
 
 // Provider hook that creates auth object and handles state
 export const useProvideAuth = () => {
-  const [user, setUser] = useState(null);
-  const auth = getAuth(app);
+  const [user, setUser] = useState(null)
+  const auth = getAuth(app)
 
   const signin = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password).then(
-      (response) => {
-        setUser(response.user);
-        return response.user;
-      }
-    );
-  };
+    return signInWithEmailAndPassword(auth, email, password).then(response => {
+      setUser(response.user)
+      return response.user
+    })
+  }
 
   const signup = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password).then(
-      (response) => {
-        setUser(response.user);
-        return response.user;
+      response => {
+        setUser(response.user)
+        return response.user
       }
-    );
-  };
+    )
+  }
 
   const signout = () => {
     return signOut(auth).then(() => {
-      setUser(false);
-    });
-  };
+      setUser(false)
+    })
+  }
 
-  const sendPassResetEmail = (email) => {
+  const sendPassResetEmail = email => {
     return sendPasswordResetEmail(auth, email).then(() => {
-      return true;
-    });
-  };
+      return true
+    })
+  }
 
   const confirmPassReset = (code, password) => {
     return confirmPasswordReset(auth, code, password).then(() => {
-      return true;
-    });
-  };
+      return true
+    })
+  }
 
-  const updateName = (name) => {
+  const updateName = name => {
     return updateProfile(auth.currentUser, {
       displayName: name,
     }).then(() => {
-      return true;
-    });
-  };
+      return true
+    })
+  }
 
   // Subscribe to user on mount
   // Because this sets state in the callback it will cause any ...
@@ -82,16 +86,16 @@ export const useProvideAuth = () => {
   // ... latest auth object.
   useEffect(() => {
     // Cleanup subscription on unmount
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
       if (user) {
-        setUser(user);
+        setUser(user)
       } else {
-        setUser(false);
+        setUser(false)
       }
-    });
+    })
 
-    return () => unsubscribe();
-  }, [auth]);
+    return () => unsubscribe()
+  }, [auth])
 
   // Return the user object and auth methods
   return {
@@ -102,5 +106,5 @@ export const useProvideAuth = () => {
     sendPassResetEmail,
     confirmPassReset,
     updateName,
-  };
-};
+  }
+}
